@@ -5,3 +5,6 @@ target/
 # Mac
 .DS_Store
 
+# Generated data
+src/main/protobuf/test_record.proto
+test-data/

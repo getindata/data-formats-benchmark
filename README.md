@@ -1,6 +1,5 @@
 # data-formats-benchmark
 
 ```bash
-python3 test-generator/generate_test_sample.py
-mvn clean install
+mvn clean package exec:exec@run-benchmark-jar -P run-benchmark
 ```
