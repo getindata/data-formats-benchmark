@@ -11,13 +11,13 @@ public class JsonConverter {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    public TestRecord convert(String value) throws JsonProcessingException {
-        return OBJECT_MAPPER.readValue(value, TestRecord.class);
+    public TestRecord convert(byte[] value) throws JsonProcessingException {
+        return OBJECT_MAPPER.readValue(new String(value), TestRecord.class);
     }
 
-    public List<TestRecord> convert(String[] values) throws JsonProcessingException {
-        List<TestRecord> result = new ArrayList<>(values.length);
-        for (String value : values) {
+    public List<TestRecord> convert(List<byte[]> values) throws JsonProcessingException {
+        List<TestRecord> result = new ArrayList<>(values.size());
+        for (byte[] value : values) {
             result.add(convert(value));
         }
         return result;

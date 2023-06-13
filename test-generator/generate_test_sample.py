@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # Test data
     os.makedirs("test-data/", exist_ok=True)
     with open("test-data/test_data.json", mode="w") as f:
-        f.writelines(generate_json_records(100))
+        f.writelines(generate_json_records(RECORD_COUNT))
 
     # Java POJO
     os.makedirs("target/generated-sources/pojo/com/getindata/schemas/pojo/", exist_ok=True)

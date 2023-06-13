@@ -6,7 +6,10 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Fork(value = 1, warmups = 1)
 @BenchmarkMode(Mode.AverageTime)
@@ -17,11 +20,13 @@ public class JsonBenchmark {
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
-        public String[] inputRecords;
+        public List<byte[]> inputRecords;
 
         @Setup
         public void doSetup() throws IOException {
-            inputRecords = Files.readString(Path.of("test-data/test_data.json")).split("\n");
+            inputRecords = Arrays.stream(Files.readString(Path.of("test-data/test_data.json")).split("\n"))
+                    .map(String::getBytes)
+                    .collect(Collectors.toList());
         }
     }
 
