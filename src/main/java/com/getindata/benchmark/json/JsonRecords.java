@@ -3,23 +3,25 @@ package com.getindata.benchmark.json;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.google.common.io.Resources.getResource;
+import static com.google.common.io.Resources.readLines;
+import static java.nio.charset.Charset.defaultCharset;
+import static java.util.stream.Collectors.toList;
 
 @UtilityClass
 public class JsonRecords {
 
-    public static List<byte[]> jsonRecordsAsBytes()  {
-        return Arrays.stream(jsonRecords())
+    public static List<byte[]> jsonRecordsAsBytes() {
+        return jsonRecords()
+                .stream()
                 .map(String::getBytes)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @SneakyThrows
-    public static String[] jsonRecords() {
-        return Files.readString(Path.of("test-data/test_data.json")).split("\n");
+    public static List<String> jsonRecords(){
+        return readLines(getResource("test_data.json"), defaultCharset());
     }
 }

@@ -1,4 +1,4 @@
-package com.getindata.benchmark.proto;
+package com.getindata.benchmark.avro;
 
 import com.getindata.benchmark.compression.Compressor;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -15,16 +15,17 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.getindata.benchmark.proto.ProtoRecords.protoRecordsAsBytes;
+import static com.getindata.benchmark.avro.AvroRecords.avroRecordsAsBytes;
 import static java.util.stream.Collectors.toList;
 
 @Fork(value = 1, warmups = 1)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
-public class ProtoBenchmark {
+public class AvroBenchmark {
 
-    private static final ProtoDeserializer PROTO_CONVERTER = new ProtoDeserializer();
+    private static final AvroDeserializer AVRO_CONVERTER = new AvroDeserializer();
+
     @Param({"none", "gzip", "lz4", "snappy", "zstd"})
     private String compression;
     private List<byte[]> inputRecords;
@@ -33,15 +34,15 @@ public class ProtoBenchmark {
     @Setup
     public void setup() {
         compressor = Compressor.byName(compression);
-        inputRecords = protoRecordsAsBytes().stream().map(compressor::compress).collect(toList());
+        inputRecords = avroRecordsAsBytes().stream().map(compressor::compress).collect(toList());
     }
 
     @Benchmark
-    public void readProtoObjects(Blackhole blackhole) {
+    public void readAvroObjects(Blackhole blackhole) {
         blackhole.consume(
                 inputRecords.stream()
                         .map(compressor::decompress)
-                        .map(PROTO_CONVERTER::convert)
+                        .map(AVRO_CONVERTER::convert)
                         .collect(toList())
         );
     }
