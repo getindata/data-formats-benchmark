@@ -8,3 +8,4 @@ target/
 # Generated data
 src/main/protobuf/test_record.proto
 test-data/
+/data-formats-benchmark.iml

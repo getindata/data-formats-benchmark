@@ -7,7 +7,7 @@ import com.getindata.schemas.pojo.TestRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonConverter {
+public class JsonDeserializer {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

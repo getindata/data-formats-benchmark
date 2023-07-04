@@ -1,5 +1,6 @@
-package com.getindata.benchmark.json;
+package com.getindata.benchmark.proto;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -13,14 +14,14 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.getindata.benchmark.json.JsonRecords.jsonRecordsAsBytes;
+import static com.getindata.benchmark.proto.ProtoRecords.protoRecordsAsBytes;
 
 @Fork(value = 1, warmups = 1)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class JsonBenchmark {
+public class ProtoBenchmark {
 
-    private static final JsonDeserializer JSON_CONVERTER = new JsonDeserializer();
+    private static final ProtoDeserializer PROTO_CONVERTER = new ProtoDeserializer();
 
     @State(Scope.Benchmark)
     public static class BenchmarkState {
@@ -28,13 +29,13 @@ public class JsonBenchmark {
 
         @Setup
         public void doSetup() {
-            inputRecords = jsonRecordsAsBytes();
+            inputRecords = protoRecordsAsBytes();
         }
     }
 
     @Benchmark
-    public void readJsonObjects(JsonBenchmark.BenchmarkState state, Blackhole blackhole) throws Exception {
-        blackhole.consume(JSON_CONVERTER.convert(state.inputRecords));
+    public void readProtoObjects(BenchmarkState state, Blackhole blackhole) throws InvalidProtocolBufferException {
+        blackhole.consume(PROTO_CONVERTER.convert(state.inputRecords));
     }
 
 }

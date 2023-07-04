@@ -72,6 +72,7 @@ if __name__ == "__main__":
         f.write(generate_java_class())
 
     # Protobuf Java POJO
+    os.makedirs("src/main/protobuf/", exist_ok=True)
     with open("src/main/protobuf/test_record.proto", mode="w") as f:
         f.write(generate_protobuf_schema())
 
